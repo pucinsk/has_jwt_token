@@ -1,17 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 RSpec.describe HasJwtToken::Model do
-  subject(:model) { dummy_class.new }
+  let(:model_class) { Dummy::User }
 
-  let(:dummy_class) do
-    class Dummy
-      include described_class
-
-      has_jwt_token
-    end
-  end
-
-  it 'is awesome' do
-    expect(true).to be(false)
+  it 'has got gem config present' do
+    expect(model_class.has_jwt_token).to be_present
   end
 end
