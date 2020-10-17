@@ -1,0 +1,4 @@
+{
+  "ruby.rubocop.configFilePath": "/home/jokubas/projects/has_jwt_token/.rubocop.yml",
+  "ruby.rubocop.executePath": "/home/jokubas/.rvm/gems/ruby-2.7.1@has_jwt_token/bin/"
+}
