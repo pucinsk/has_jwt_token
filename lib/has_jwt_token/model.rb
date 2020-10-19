@@ -10,6 +10,15 @@ module HasJwtToken
       base.has_secure_password
       base.extend(HasJwtModelConfiguration)
       base.extend(AuthenticateByIdentificator)
+      base.include(JwtTokenable)
+    end
+
+    def jwt_token_config
+      @jwt_token_config ||= self.class.jwt_token_config
+    end
+
+    def jwt_config
+      @jwt_config ||= jwt_token_config.jwt_config
     end
   end
 end

@@ -5,3 +5,11 @@ require:
 AllCops:
   NewCops: enable
   TargetRubyVersion: 2.7
+
+Naming/PredicateName:
+  Enabled: true
+  Exclude:
+    - lib/has_jwt_token/has_jwt_model_configuration.rb
+
+Style/Documentation:
+  Enabled: false

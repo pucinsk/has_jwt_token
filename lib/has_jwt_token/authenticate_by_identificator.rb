@@ -6,8 +6,10 @@ module HasJwtToken
       has_jwt_token.identificator
     end
 
-    def authenticate_by_identificator(identificator_value, _password)
-      find_by(identificator: identificator_value)
+    def authenticate_by_identificator(identificator_value, password)
+      find_by_identificator(identificator_value).tap do |model|
+        model.authenticate(password)
+      end
     end
 
     private
