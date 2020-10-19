@@ -3,11 +3,6 @@
 require 'bundler/setup'
 require 'has_jwt_token'
 
-require File.expand_path('../spec/dummy/config/environment.rb', __dir__)
-ENV['RAILS_ROOT'] ||= "#{File.dirname(__FILE__)}../../../spec/dummy"
-
-require 'rspec/rails'
-
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'

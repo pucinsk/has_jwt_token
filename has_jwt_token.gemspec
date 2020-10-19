@@ -30,19 +30,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'bcrypt', '~> 3.1.7'
-  spec.add_dependency 'jbuilder', '~> 2.7'
-  spec.add_dependency 'listen'
-  spec.add_dependency 'puma', '~> 4.1'
-  spec.add_dependency 'rails'
-  spec.add_dependency 'sass-rails', '>= 6'
-  spec.add_dependency 'sqlite3', '~> 1.4'
-  spec.add_dependency 'webpacker', '~> 4.0'
-
-  spec.add_development_dependency 'rspec-rails'
-
+  spec.add_development_dependency 'pry'
   spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'rubocop-performance'
-  spec.add_development_dependency 'rubocop-rails'
   spec.add_development_dependency 'rubocop-rspec'
 end
