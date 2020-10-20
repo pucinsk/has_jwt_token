@@ -9,7 +9,7 @@ RSpec.describe HasJwtToken::Model do
 
   describe '.has_jwt_token' do
     let(:config) do
-      HasJwtToken::AuthorizableModelConfiguration.new
+      HasJwtToken::AuthorizableModelConfiguration.new(model)
     end
 
     before do

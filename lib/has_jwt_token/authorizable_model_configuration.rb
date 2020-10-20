@@ -4,6 +4,12 @@ require 'has_jwt_token/jwt_configuration'
 
 module HasJwtToken
   class AuthorizableModelConfiguration
+    attr_reader :model
+
+    def initialize(model)
+      @model = model
+    end
+
     def identificator=(value)
       @identificator = value.to_sym
     end
@@ -15,7 +21,7 @@ module HasJwtToken
     end
 
     def jwt
-      @jwt ||= JwtConfiguration.new
+      @jwt ||= JwtConfiguration.new(model)
       yield(@jwt) if block_given?
       @jwt
     end

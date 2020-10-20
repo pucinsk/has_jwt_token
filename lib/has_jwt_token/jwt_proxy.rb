@@ -4,51 +4,27 @@ require 'jwt'
 
 module HasJwtToken
   class JwtProxy
-    HMACK = 'HS256'
+    attr_reader :algorithm, :payload, :secret
 
-    attr_reader :token
-
-    class << self
-      def encode(payload:, secret:, algorithm:)
-        token = JWT.encode(payload, secret, algorithm)
-
-        new(token: token, payload: payload)
-      end
-
-      def decode(token)
-        jwt = new(token: token)
-        jwt.valid? ? jwt : nil
-      end
-
-      def secret
-        Rails.application.credentials.secret
-      end
-    end
-
-    def initialize(token:, payload: nil)
-      @token = token
+    def initialize(algorithm: nil, payload: nil, secret: nil)
+      @algorithm = algorithm
       @payload = payload
+      @secret = secret
     end
 
-    def payload
-      return @payload unless @payload.nil?
+    def encode
+      JWT.encode(payload, secret, algorithm)
+    end
 
-      @payload = decode.symbolize_keys
+    def decode(token)
+      JWT.decode(token, secret, false, algorithm: algorithm)[0]
+    end
+
+    def decode!(token)
+      JWT.decode(token, secret, true, algorithm: algorithm)[0]
     end
 
     private
-
-    def decode
-      JWT.decode(token, secret, false, algorithm: HMACK)[0]
-    end
-
-    def decode!
-      JWT.decode(token, secret, true, algorithm: HMACK)[0]
-    end
-
-    def secret
-      self.class.secret
-    end
 
     def valid?
       decode! && true
