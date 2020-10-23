@@ -4,11 +4,7 @@ require 'has_jwt_token/jwt_proxy'
 
 module HasJwtToken
   module JwtTokenable
-    delegate :algorithm, :payload, :secret, to: :jwt
-
-    def token
-      @token ||= encode
-    end
+    delegate :algorithm, :payload, :secret, to: :has_jwt_token
 
     def encode
       with_jwt_configuration(&:encode)

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'has_jwt_token/model'
+
 class BaseClass
   class << self
     def find_by(args)
@@ -19,24 +21,14 @@ class BaseClass
 end
 
 class DummyUser < BaseClass
-  include HasJwtToken
+  include HasJwtToken::Model
 
   attr_accessor :name, :password_digest
 
-  has_jwt_token do |c|
-    c.identificator :name
-
-    c.jwt do |jwt|
-      jwt.algorithm 'HS256'
-      jwt.payload_attribute :name
-      jwt.secret 'secret'
-    end
-  end
-
-  # spec support
-
-  def ==(other)
-    name == other.name
+  has_jwt_token do |jwt|
+    jwt.algorithm 'HS256'
+    jwt.payload_attribute :name
+    jwt.secret 'secret'
   end
 
   class << self

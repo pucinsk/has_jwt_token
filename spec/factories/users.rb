@@ -7,7 +7,6 @@ FactoryBot.define do
   factory :user, class: 'DummyUser' do
     name { 'John' }
     password { 'password' }
-    password_confirmation { 'password' }
 
     after(:build) do |user, _|
       user.password_digest = BCrypt::Password.create(user.password)

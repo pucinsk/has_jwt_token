@@ -6,10 +6,16 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 2.7
 
-Naming/PredicateName:
+Metrics/BlockLength:
   Enabled: true
   Exclude:
-    - lib/has_jwt_token/has_jwt_model_configuration.rb
+    - has_jwt_token.gemspec
+    - spec/**/*.rb
+
+Naming/PredicateName:
+  Enabled: true
+  AllowedMethods:
+    - has_jwt_token
 
 Style/Documentation:
   Enabled: false

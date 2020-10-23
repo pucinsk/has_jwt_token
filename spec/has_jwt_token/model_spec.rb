@@ -5,29 +5,42 @@ require 'spec_helper'
 RSpec.describe HasJwtToken::Model do
   subject(:model) { build(:user) }
 
-  let(:identificator) { 'name' }
-
   describe '.has_jwt_token' do
-    let(:config) do
-      HasJwtToken::AuthorizableModelConfiguration.new(model)
-    end
-
-    before do
-      config.identificator(identificator)
-    end
-
     it 'has got gem config present' do
-      expect(model.class.has_jwt_token.identificator).to eq(config.identificator)
+      expect(model.class.has_jwt_token).to be_a(HasJwtToken::JwtConfiguration)
     end
   end
 
-  describe '.authenticate_by_identificator' do
-    subject(:authenticate_by_identificator) do
-      DummyUser.authenticate_by_identificator(model.name, model.password)
+  describe '#authenticate' do
+    subject(:authenticate) { model.authenticate(password) }
+
+    let(:token) { 'token' }
+
+    before do
+      allow(JWT).to receive(:encode).and_return(token)
+      authenticate
     end
 
-    it 'returns user' do
-      expect(authenticate_by_identificator).to eq(model)
+    context 'when password is valid' do
+      let(:password) { model.password }
+
+      it 'returns model' do
+        expect(authenticate).to be_a(model.class)
+      end
+
+      it 'returns token' do
+        expect(model.token).to eq(token)
+      end
+    end
+
+    context 'when password is not valid' do
+      let(:password) { 'wrong password' }
+
+      it { is_expected.to be_falsey }
+
+      it 'does not return token' do
+        expect(model.token).to be_nil
+      end
     end
   end
 end

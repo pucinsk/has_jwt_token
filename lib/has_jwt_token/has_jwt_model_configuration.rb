@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'has_jwt_token/authorizable_model_configuration'
+require 'has_jwt_token/jwt_configuration'
 
 module HasJwtToken
   module HasJwtModelConfiguration
     def has_jwt_token
-      @jwt_token_config ||= AuthorizableModelConfiguration.new(self)
-      yield(@jwt_token_config) if block_given?
-      @jwt_token_config
+      @has_jwt_token ||= JwtConfiguration.new(self)
+      yield(@has_jwt_token) if block_given?
+      @has_jwt_token
     end
   end
 end
