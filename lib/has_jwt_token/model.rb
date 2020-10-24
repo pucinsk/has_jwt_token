@@ -9,7 +9,7 @@ module HasJwtToken
   module Authenticate
     def authenticate(password)
       super(password).tap do |authenticated|
-        @token = encode if authenticated
+        @token = authenticated && encode || nil
       end
     end
   end

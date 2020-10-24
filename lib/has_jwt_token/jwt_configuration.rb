@@ -26,11 +26,5 @@ module HasJwtToken
 
       @secret = value
     end
-
-    def payload
-      @payload ||= payload_attribute.each_with_object({}) do |attribute, memo|
-        memo.merge(attribute => model.public_send(attribute))
-      end
-    end
   end
 end
