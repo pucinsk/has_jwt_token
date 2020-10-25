@@ -43,6 +43,11 @@ class User
     jwt.subject :dummy_app
   end
 end
+
+user = User.last
+
+user.authenicate(password) # => user with @token
+user.auhtenticate_with_jwt(token) # => user with @token
 ```
 
 ## Development
