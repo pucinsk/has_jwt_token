@@ -13,3 +13,5 @@
 /.vscode/
 .ruby-gemset
 coverage
+
+*.gem

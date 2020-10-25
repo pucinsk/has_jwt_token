@@ -1,8 +1,8 @@
 # HasJwtToken
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/has_jwt_token`. To experiment with that code, run `bin/console` for an interactive prompt.
+HasJwtToken provides JWT authetication for models which are kean to use `has_secure_password` in Rails app and wants to use it to grant jwt tokens.
 
-TODO: Delete this and the text above, and describe your gem
+This gem is build on top of [Ruby's JWT](https://github.com/jwt/ruby-jwt) gem and it implements `JWT.encode` and `JWT.decode` methods.
 
 ## Installation
 
@@ -21,8 +21,29 @@ Or install it yourself as:
     $ gem install has_jwt_token
 
 ## Usage
+To get started add `HasJwtToken::Model` into your model and configure gem using `has_jwt_token`.
 
-TODO: Write usage instructions here
+```ruby
+class User
+  include HasJwtToken::Model
+
+  attr_accessor :name, :password_digest
+
+  has_jwt_token do |jwt|
+    jwt.algorithm 'HS256'
+    jwt.payload_attribute :name
+    jwt.secret 'secret'
+
+    jwt.expiration_time -> { Time.now.to_i + 60 }
+    jwt.not_before_time -> { Time.now.to_i }
+    jwt.issued_at -> { Time.now.to_i }
+    jwt.jwt_id -> { SecureRandom.hex }
+    jwt.issuer :dummy_app
+    jwt.audience :client_app
+    jwt.subject :dummy_app
+  end
+end
+```
 
 ## Development
 

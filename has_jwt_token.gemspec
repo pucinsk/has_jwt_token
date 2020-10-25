@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['j.pucinskas@gmail.com']
 
   spec.summary = 'Fast running JWT implentation for Rails apps!'
-  spec.description = 'JWTails provides JWT authetication'\
+  spec.description = 'HasJwtToken provides JWT authetication'\
     'for models which are kean to use `has_secure_password`'\
     'in Rails app. It allows find resource by some identificator'\
     'and password of by JWT token itself.'
