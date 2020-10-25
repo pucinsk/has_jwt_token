@@ -17,5 +17,8 @@ Naming/PredicateName:
   AllowedMethods:
     - has_jwt_token
 
+RSpec/NestedGroups:
+  Enabled: false
+
 Style/Documentation:
   Enabled: false

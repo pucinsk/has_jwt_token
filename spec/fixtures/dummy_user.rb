@@ -29,6 +29,14 @@ class DummyUser < BaseClass
     jwt.algorithm 'HS256'
     jwt.payload_attribute :name
     jwt.secret 'secret'
+
+    jwt.expiration_time -> { Time.now.to_i + 60 }
+    jwt.not_before_time -> { Time.now.to_i }
+    jwt.issued_at -> { Time.now.to_i }
+    jwt.jwt_id -> { SecureRandom.hex }
+    jwt.issuer :dummy_app
+    jwt.audience :client_app
+    jwt.subject :dummy_app
   end
 
   class << self

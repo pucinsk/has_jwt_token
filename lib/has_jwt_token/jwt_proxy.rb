@@ -24,10 +24,8 @@ module HasJwtToken
       JWT.decode(token, secret, true, algorithm: algorithm)[0]
     end
 
-    private
-
-    def valid?
-      decode! && true
+    def valid?(token)
+      decode!(token) && true
     rescue JWT::DecodeError
       false
     end
