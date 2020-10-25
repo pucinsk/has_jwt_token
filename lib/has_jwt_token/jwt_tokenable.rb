@@ -21,6 +21,10 @@ module HasJwtToken
 
     private
 
+    def has_jwt_token
+      self.class.has_jwt_token
+    end
+
     def payload
       @payload ||= model_payload.merge(claims_payload)
     end

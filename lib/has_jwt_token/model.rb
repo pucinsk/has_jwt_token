@@ -17,9 +17,5 @@ module HasJwtToken
       base.extend(HasJwtModelConfiguration)
       base.include(JwtTokenable)
     end
-
-    def has_jwt_token
-      @has_jwt_token ||= self.class.has_jwt_token
-    end
   end
 end

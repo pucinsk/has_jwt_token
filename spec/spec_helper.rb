@@ -1,7 +1,15 @@
 # frozen_string_literal: true
 
+require 'simplecov'
+
+SimpleCov.start do
+  enable_coverage :branch
+  add_filter('spec')
+end
+
 require 'bundler/setup'
 require 'factory_bot'
+require 'pry'
 require 'has_jwt_token'
 require 'fixtures/dummy_user'
 
