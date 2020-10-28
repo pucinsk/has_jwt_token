@@ -27,7 +27,10 @@ class DummyUser < BaseClass
 
   has_jwt_token do |jwt|
     jwt.algorithm 'HS256'
-    jwt.payload_attribute :name
+    jwt.payload :name # model attribute #name
+    jwt.payload :custom_proc_class_method, -> { dummy_class_method }
+    jwt.payload :custom_proc_istance_method, ->(model) { model.dummy_instance_method }
+    jwt.payload :custom_plain_value, 321
     jwt.secret 'secret'
 
     jwt.expiration_time -> { Time.now.to_i + 60 }
@@ -37,6 +40,20 @@ class DummyUser < BaseClass
     jwt.issuer :dummy_app
     jwt.audience :client_app
     jwt.subject :dummy_app
+  end
+
+  def initialize(name: 'John', password_digest: 'secret')
+    super()
+    @name = name
+    @password_digest = password_digest
+  end
+
+  def self.dummy_class_method
+    'dummy_class_method'
+  end
+
+  def dummy_instance_method
+    'dummy_instance_method'
   end
 
   class << self

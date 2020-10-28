@@ -31,7 +31,10 @@ class User
 
   has_jwt_token do |jwt|
     jwt.algorithm 'HS256'
-    jwt.payload_attribute :name
+    jwt.payload :name # model attribute #name
+    jwt.payload :custom_proc_class_method, -> { dummy_class_method }
+    jwt.payload :custom_proc_istance_method, ->(model) { model.dummy_instance_method }
+    jwt.payload :custom_plain_value, 321
     jwt.secret 'secret'
 
     jwt.expiration_time -> { Time.now.to_i + 60 }

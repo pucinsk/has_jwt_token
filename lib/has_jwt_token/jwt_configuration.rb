@@ -12,13 +12,11 @@ module HasJwtToken
       subject: :sub
     }.freeze
 
-    attr_accessor :defined_claims
-    attr_reader :model
-    attr_writer :payload_attribute
+    attr_accessor :model
+    attr_reader :defined_claims
 
-    def initialize(model)
-      @model = model
-      @payload_attribute = []
+    def initialize
+      @payload = {}
       @defined_claims = []
     end
 
@@ -28,29 +26,45 @@ module HasJwtToken
       @algorithm = value
     end
 
-    def payload_attribute(value = nil)
-      return @payload_attribute unless value
-
-      payload_attribute << value
-    end
-
-    CLAIMS.each do |claim_name, _|
-      define_method(claim_name) do |value = nil|
-        if value
-          defined_claims << claim_name unless defined_claims.include?(claim_name)
-          instance_variable_set("@#{claim_name}".to_sym, value)
-          return value
-        end
-
-        claim_value = instance_variable_get("@#{claim_name}".to_sym)
-        claim_value.is_a?(Proc) ? claim_value.call : claim_value
-      end
-    end
-
     def secret(value = nil)
       return @secret unless value
 
       @secret = value
+    end
+
+    CLAIMS.each_key do |claim_name|
+      define_method(claim_name) do |value = nil|
+        unless value
+          claim_value = instance_variable_get("@#{claim_name}".to_sym)
+          return claim_value.is_a?(Proc) ? claim_value.call : claim_value
+        end
+
+        @defined_claims |= [claim_name]
+        instance_variable_set("@#{claim_name}".to_sym, value)
+      end
+    end
+
+    def model_payload
+      @payload.transform_values do |val|
+        next val if !val.is_a?(Proc) || !model
+
+        begin
+          val.call(model)
+        rescue ArgumentError
+          val.call
+        end
+      end
+    end
+
+    def payload(name = nil, value = nil)
+      @payload[name] = value || ->(model) { model.respond_to?(name) && model.public_send(name) } if name
+    end
+
+    def claims_payload
+      defined_claims.each_with_object({}) do |claim_name, memo|
+        claim_key = CLAIMS[claim_name]
+        memo[claim_key] = public_send(claim_name)
+      end
     end
   end
 end

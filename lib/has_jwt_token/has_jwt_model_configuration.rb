@@ -4,10 +4,12 @@ require 'has_jwt_token/jwt_configuration'
 
 module HasJwtToken
   module HasJwtModelConfiguration
-    def has_jwt_token
-      @has_jwt_token ||= JwtConfiguration.new(self)
+    def has_jwt_token(model = nil)
+      @has_jwt_token ||= JwtConfiguration.new
       yield(@has_jwt_token) if block_given?
-      @has_jwt_token
+      @has_jwt_token.tap do |config|
+        config.model = model if model
+      end
     end
   end
 end
