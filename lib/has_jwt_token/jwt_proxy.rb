@@ -4,16 +4,17 @@ require 'jwt'
 
 module HasJwtToken
   class JwtProxy
-    attr_reader :algorithm, :payload, :secret
+    attr_reader :algorithm, :payload, :secret, :header_fields
 
-    def initialize(algorithm: nil, payload: nil, secret: nil)
+    def initialize(algorithm: '', payload: {}, secret: '', header_fields: {})
       @algorithm = algorithm
       @payload = payload
       @secret = secret
+      @header_fields = header_fields
     end
 
     def encode
-      JWT.encode(payload, secret, algorithm)
+      JWT.encode(payload, secret, algorithm, header_fields)
     end
 
     def decode(token)

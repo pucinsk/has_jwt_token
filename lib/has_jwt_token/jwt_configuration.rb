@@ -17,6 +17,7 @@ module HasJwtToken
 
     def initialize
       @payload = {}
+      @header = {}
       @defined_claims = []
     end
 
@@ -64,6 +65,16 @@ module HasJwtToken
       defined_claims.each_with_object({}) do |claim_name, memo|
         claim_key = CLAIMS[claim_name]
         memo[claim_key] = public_send(claim_name)
+      end
+    end
+
+    def header(name = nil, value = nil)
+      @header[name] = value if name
+    end
+
+    def header_fields
+      @header.transform_values do |val|
+        val.is_a?(Proc) ? val.call : val
       end
     end
   end

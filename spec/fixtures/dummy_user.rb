@@ -33,6 +33,9 @@ class DummyUser < BaseClass
     jwt.payload :custom_plain_value, 321
     jwt.secret 'secret'
 
+    jwt.header :header_field, :header_value
+    jwt.header :header_field2, -> { 123 }
+
     jwt.expiration_time -> { Time.now.to_i + 60 }
     jwt.not_before_time -> { Time.now.to_i }
     jwt.issued_at -> { Time.now.to_i }
