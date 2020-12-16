@@ -12,6 +12,10 @@ class BaseClass
       end
     end
 
+    def self.column_names
+      {}
+    end
+
     private
 
     def default_args
@@ -27,10 +31,10 @@ class DummyUser < BaseClass
 
   has_jwt_token do |jwt|
     jwt.algorithm 'HS256'
-    jwt.payload :name # model attribute #name
-    jwt.payload :custom_proc_class_method, -> { dummy_class_method }
-    jwt.payload :custom_proc_istance_method, ->(model) { model.dummy_instance_method }
-    jwt.payload :custom_plain_value, 321
+    jwt.payload :name, auth_by: true # model attribute #name
+    jwt.payload :custom_proc_class_method, value: -> { dummy_class_method }
+    jwt.payload :custom_proc_istance_method, value: ->(model) { model.dummy_instance_method }
+    jwt.payload :custom_plain_value, value: 321
     jwt.secret 'secret'
 
     jwt.header :header_field, :header_value
@@ -49,6 +53,10 @@ class DummyUser < BaseClass
     super()
     @name = name
     @password_digest = password_digest
+  end
+
+  def self.column_names
+    %w[name password_digest]
   end
 
   def self.dummy_class_method

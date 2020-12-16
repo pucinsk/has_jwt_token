@@ -2,6 +2,7 @@
 
 module HasJwtToken
   class JwtConfiguration
+    DEFAULT_AUTH_ATTRIBUTE = :id
     CLAIMS = {
       expiration_time: :exp,
       not_before_time: :nbf,
@@ -57,7 +58,8 @@ module HasJwtToken
       end
     end
 
-    def payload(name = nil, value = nil)
+    def payload(name = nil, value: nil, auth_by: false)
+      @authenticate_by = name if auth_by
       @payload[name] = value || ->(model) { model.respond_to?(name) && model.public_send(name) } if name
     end
 
@@ -76,6 +78,10 @@ module HasJwtToken
       @header.transform_values do |val|
         val.is_a?(Proc) ? val.call : val
       end
+    end
+
+    def authenticate_by
+      @authenticate_by || DEFAULT_AUTH_ATTRIBUTE
     end
   end
 end

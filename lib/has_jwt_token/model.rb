@@ -8,7 +8,7 @@ require 'has_jwt_token/jwt_tokenable'
 
 module HasJwtToken
   module Model
-    attr_reader :token
+    attr_accessor :token
 
     def self.included(base)
       base.include(ActiveModel::SecurePassword)

@@ -7,9 +7,7 @@ module HasJwtToken
     def has_jwt_token(model = nil)
       @has_jwt_token ||= JwtConfiguration.new
       yield(@has_jwt_token) if block_given?
-      @has_jwt_token.tap do |config|
-        config.model = model if model
-      end
+      @has_jwt_token.tap { |jwt| jwt.model = model if model }
     end
   end
 end

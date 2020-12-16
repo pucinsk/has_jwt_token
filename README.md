@@ -53,7 +53,7 @@ end
 user = User.last
 
 user.authenicate(password) # => user with @token
-user.auhtenticate_with_jwt(token) # => user with @token
+User.find_with_jwt(token) # => user with @token
 ```
 
 ## Roadmap

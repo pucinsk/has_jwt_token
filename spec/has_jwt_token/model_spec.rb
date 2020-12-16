@@ -5,12 +5,6 @@ require 'spec_helper'
 RSpec.describe HasJwtToken::Model do
   subject(:model) { build(:user) }
 
-  describe '.has_jwt_token' do
-    it 'has got gem config present' do
-      expect(model.class.has_jwt_token).to be_a(HasJwtToken::JwtConfiguration)
-    end
-  end
-
   shared_examples 'successful authentication' do
     it 'returns model' do
       expect(authenticate).to be_a(model.class)
@@ -49,23 +43,24 @@ RSpec.describe HasJwtToken::Model do
     end
   end
 
-  describe '#autheticate_with_jwt' do
-    subject(:authenticate) { model.authenticate_with_jwt(token) }
+  describe '.find_with_jwt' do
+    subject(:find_with_jwt) { DummyUser.find_with_jwt(token) }
 
-    before do
-      authenticate
-    end
-
-    context 'with valid token' do
+    context 'when token is valid' do
       let(:token) { model.authenticate(model.password).token }
 
-      it_behaves_like 'successful authentication'
+      it 'returns model record with token', :aggregate_failures do
+        expect(find_with_jwt).to be_a(DummyUser)
+        expect(find_with_jwt.token).not_to be_blank
+      end
     end
 
-    context 'with ivalid token' do
-      let(:token) { 'invalid token' }
+    context 'when token is invalid' do
+      let(:token) { 'invalid_token' }
 
-      it_behaves_like 'failed authentication'
+      it 'raises an error' do
+        expect { find_with_jwt }.to raise_error(HasJwtToken::InvalidToken)
+      end
     end
   end
 end
