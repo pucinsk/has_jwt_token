@@ -2,7 +2,7 @@
 
 HasJwtToken provides JWT authetication for models which are kean to use `has_secure_password` in Rails app and wants to use it to grant jwt tokens.
 
-This gem is build on top of [Ruby's JWT](https://github.com/jwt/ruby-jwt) gem and it implements `JWT.encode` and `JWT.decode` methods.
+This gem is build on top of [Ruby's JWT](https://github.com/jwt/ruby-jwt) gem and it implements `JWT.encode` and `JWT.decode` (with validation enabled) methods.
 
 ## Installation
 
