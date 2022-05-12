@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    has_jwt_token (0.2.3)
+    has_jwt_token (0.3.0)
       bcrypt
       jwt
       rails (>= 5.0, < 7.0)
